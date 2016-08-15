@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Week 4 Game stat checker</title>
+</head>
+<body>
+	<label>Name</label><br/>
+	<input type="text" id="name_0" value="Luke">
+	<input type="text" id="name_1" value="Yoda">
+	<input type="text" id="name_2" value="Han">
+	<input type="text" id="name_3" value="Vader">
+	<br/><br/>
+
+	<label>HP</label><br/>
+	<input type="text" id="hp_0" value="100">
+	<input type="text" id="hp_1" value="90">
+	<input type="text" id="hp_2" value="110">
+	<input type="text" id="hp_3" value="120">
+	<br/><br/>
+
+	<label>Attack</label><br/>
+	<input type="text" id="attack_0" value="6">
+	<input type="text" id="attack_1" value="9">
+	<input type="text" id="attack_2" value="6">
+	<input type="text" id="attack_3" value="8">
+	<br/><br/>
+
+	<label>CounterAttack</label><br/>
+	<input type="text" id="counter_0" value="12">
+	<input type="text" id="counter_1" value="16">
+	<input type="text" id="counter_2" value="10">
+	<input type="text" id="counter_3" value="14">
+	<br/><br/>
+
+	<button>Test</button>
+	<br/><br/>
+
+	<div id="result"></div>
+
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+		$("button").on('click', function() {
+			$("#result").empty();
+			checkStats();
+		});
+
+		function checkStats() {
+			let charArray = [{}, {}, {}, {}];
+
+			for (var i = 0; i < 4; i++) {
+				charArray[i].index = i;
+				charArray[i].name = $("#name_" + i).val();
+				charArray[i].hp = parseInt($("#hp_" + i).val());
+				charArray[i].attack = parseInt($("#attack_" + i).val());
+				charArray[i].counter = parseInt($("#counter_" + i).val());
+			}
+
+			for (var i = 0; i < 4; i++) {
+				let result = checkAllEnemies([], charArray[i], charArray[i].attack);
+				
+
+				if ($.isArray(result)) {
+					$("#result").append(charArray[i].name + " can win by fighting in this order: "
+						+ charArray[result[0]].name + ", "
+						+ charArray[result[1]].name + ", "
+						+ charArray[result[2]].name + "<br/>");
+				}
+				else {
+					$("#result").append(charArray[i].name + " cannot win.<br/>");
+				}
+
+				function checkAllEnemies(indexArr, player, atkpwr) {
+					// debugger;
+					let currentIndexArr;
+					let currentPlayer;
+					let currentAtkPwr;
+
+					for (var i = 0; i < 4; i++) {
+						currentIndexArr = indexArr.slice();
+						currentPlayer = $.extend(true, {}, player);
+						currentAtkPwr = atkpwr;
+
+						if ((i != currentPlayer.index) && (currentIndexArr.indexOf(i) == -1)) {
+							if (doBattle(charArray[i])) {
+								currentIndexArr.push(i);
+								if (currentIndexArr.length > 2) { return currentIndexArr; }
+								else {
+									let result = checkAllEnemies(currentIndexArr, currentPlayer, currentAtkPwr);
+									if ($.isArray(result)) { return result; }
+								}
+							}
+						}
+					}
+
+					function doBattle(enemy) {
+						// debugger;
+						let tempPlayer = $.extend(true, {}, currentPlayer);
+						let tempEnemy = $.extend(true, {}, enemy);
+						let tempPlayerAtkPwr = currentAtkPwr;
+						
+						while (tempEnemy.hp > 0 && tempPlayer.hp > 0) {
+							tempEnemy.hp -= tempPlayerAtkPwr;
+							tempPlayerAtkPwr += currentPlayer.attack;
+
+							if (tempEnemy.hp <= 0) {
+								currentPlayer = tempPlayer;
+								currentAtkPwr = tempPlayerAtkPwr;
+								return true;
+							}
+							
+							tempPlayer.hp -= tempEnemy.counter;
+							
+							if (tempPlayer.hp <= 0) { return false; }
+						}
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
