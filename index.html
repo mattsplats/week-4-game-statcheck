@@ -4,6 +4,9 @@
 	<title>Week 4 Game stat checker</title>
 </head>
 <body>
+	<h2>Week 4 Stat Checker</h2>
+	<p>Replace any/all of the default values and press Test. All possible win scenarios (or "character cannot win") for each character will be listed.</p>
+
 	<label>Name</label><br/>
 	<input type="text" id="name_0" value="Luke">
 	<input type="text" id="name_1" value="Yoda">
@@ -19,17 +22,17 @@
 	<br/><br/>
 
 	<label>Attack</label><br/>
-	<input type="text" id="attack_0" value="6">
-	<input type="text" id="attack_1" value="9">
-	<input type="text" id="attack_2" value="6">
+	<input type="text" id="attack_0" value="11">
+	<input type="text" id="attack_1" value="15">
+	<input type="text" id="attack_2" value="13">
 	<input type="text" id="attack_3" value="8">
 	<br/><br/>
 
 	<label>CounterAttack</label><br/>
-	<input type="text" id="counter_0" value="12">
-	<input type="text" id="counter_1" value="16">
-	<input type="text" id="counter_2" value="10">
-	<input type="text" id="counter_3" value="14">
+	<input type="text" id="counter_0" value="30">
+	<input type="text" id="counter_1" value="25">
+	<input type="text" id="counter_2" value="15">
+	<input type="text" id="counter_3" value="20">
 	<br/><br/>
 
 	<button>Test</button>
@@ -72,7 +75,7 @@
 				else {
 					$("#result").append(charArray[i].name + " cannot win.<br/>");
 				}
-				
+
 				$("#result").append("<br/>");
 
 				function checkAllEnemies(indexArr, player, atkpwr) {
