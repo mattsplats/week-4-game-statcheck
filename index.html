@@ -47,7 +47,7 @@
 		function checkStats() {
 			let charArray = [{}, {}, {}, {}];
 
-			for (var i = 0; i < 4; i++) {
+			for (let i = 0; i < 4; i++) {
 				charArray[i].index = i;
 				charArray[i].name = $("#name_" + i).val();
 				charArray[i].hp = parseInt($("#hp_" + i).val());
@@ -55,19 +55,25 @@
 				charArray[i].counter = parseInt($("#counter_" + i).val());
 			}
 
-			for (var i = 0; i < 4; i++) {
-				let result = checkAllEnemies([], charArray[i], charArray[i].attack);
+			for (let i = 0; i < 4; i++) {
+				let resultArr = [];
 				
+				checkAllEnemies([], charArray[i], charArray[i].attack);
 
-				if ($.isArray(result)) {
-					$("#result").append(charArray[i].name + " can win by fighting in this order: "
-						+ charArray[result[0]].name + ", "
-						+ charArray[result[1]].name + ", "
-						+ charArray[result[2]].name + "<br/>");
+				// debugger;
+				if (resultArr.length > 0) {
+					for (let j = 0; j < resultArr.length; j++) {
+						$("#result").append(charArray[i].name + " can win by fighting in this order: "
+							+ charArray[resultArr[j][0]].name + ", "
+							+ charArray[resultArr[j][1]].name + ", "
+							+ charArray[resultArr[j][2]].name + "<br/>");
+					}
 				}
 				else {
 					$("#result").append(charArray[i].name + " cannot win.<br/>");
 				}
+				
+				$("#result").append("<br/>");
 
 				function checkAllEnemies(indexArr, player, atkpwr) {
 					// debugger;
@@ -75,7 +81,7 @@
 					let currentPlayer;
 					let currentAtkPwr;
 
-					for (var i = 0; i < 4; i++) {
+					for (let i = 0; i < 4; i++) {
 						currentIndexArr = indexArr.slice();
 						currentPlayer = $.extend(true, {}, player);
 						currentAtkPwr = atkpwr;
@@ -83,10 +89,11 @@
 						if ((i != currentPlayer.index) && (currentIndexArr.indexOf(i) == -1)) {
 							if (doBattle(charArray[i])) {
 								currentIndexArr.push(i);
-								if (currentIndexArr.length > 2) { return currentIndexArr; }
+								if (currentIndexArr.length > 2) {
+									resultArr.push(currentIndexArr);
+								}
 								else {
 									let result = checkAllEnemies(currentIndexArr, currentPlayer, currentAtkPwr);
-									if ($.isArray(result)) { return result; }
 								}
 							}
 						}
