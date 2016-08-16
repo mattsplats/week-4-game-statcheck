@@ -24,8 +24,8 @@
 	<label>Attack</label><br/>
 	<input type="text" id="attack_0" value="11">
 	<input type="text" id="attack_1" value="15">
-	<input type="text" id="attack_2" value="13">
-	<input type="text" id="attack_3" value="8">
+	<input type="text" id="attack_2" value="10">
+	<input type="text" id="attack_3" value="16">
 	<br/><br/>
 
 	<label>CounterAttack</label><br/>
@@ -71,9 +71,12 @@
 							+ charArray[resultArr[j][1]].name + ", "
 							+ charArray[resultArr[j][2]].name + "<br/>");
 					}
+					if (resultArr.length == 6) {
+						$("#result").append("<b>(" + charArray[i].name + " cannot lose!)</b><br/>");
+					}
 				}
 				else {
-					$("#result").append(charArray[i].name + " cannot win.<br/>");
+					$("#result").append("<b>" + charArray[i].name + " cannot win.</b><br/>");
 				}
 
 				$("#result").append("<br/>");
